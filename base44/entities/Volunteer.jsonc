@@ -1,0 +1,40 @@
+{
+  "name": "Volunteer",
+  "type": "object",
+  "properties": {
+    "full_name": {
+      "type": "string",
+      "description": "Volunteer's full name"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Email address"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Phone number"
+    },
+    "interest": {
+      "type": "string",
+      "enum": [
+        "caregiving",
+        "teaching",
+        "medical",
+        "skills",
+        "prayer",
+        "other"
+      ],
+      "description": "How they would like to help"
+    },
+    "message": {
+      "type": "string",
+      "description": "Additional details from the volunteer"
+    }
+  },
+  "required": [
+    "full_name",
+    "email",
+    "interest"
+  ]
+}
