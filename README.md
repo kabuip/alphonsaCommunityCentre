@@ -32,6 +32,12 @@ Run the app: `npm run dev`
 
 Open [Base44.com](http://Base44.com) and click on Publish.
 
+## Deploy to GitHub Pages
+
+This project builds as a static site. Push to the `main` branch, then in the repository's **Settings > Pages**, set **Source** to **GitHub Actions**. The included workflow publishes the site at `https://kabuip.github.io/alphonsaCommunityCentre/`.
+
+Navigation uses hash URLs (for example, `#/about`), which work without server-side route rewrites. Contact and volunteer forms open a prefilled email draft addressed to `info@saintaphonsacommunitycentre.org`; GitHub Pages cannot send emails or store submissions on its own.
+
 **Docs & Support**
 
 Documentation: [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)

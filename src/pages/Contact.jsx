@@ -1,54 +1,8 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import PageHero from '@/components/site/PageHero';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle2 } from 'lucide-react';
-import { toast } from 'sonner';
-import { base44 } from '@/api/base44Client';
-import { isValidEmail } from '@/lib/formValidation';
-import HumanCheck from '@/components/site/HumanCheck';
+import { Mail, Phone, MapPin, Clock } from 'lucide-react';
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
-  const [submitted, setSubmitted] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [emailError, setEmailError] = useState('');
-  const [isHuman, setIsHuman] = useState(false);
-  const [captchaResetKey, setCaptchaResetKey] = useState(0);
-
-  const handleEmailChange = (value) => {
-    setForm({ ...form, email: value });
-    if (emailError && isValidEmail(value)) setEmailError('');
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!isValidEmail(form.email)) {
-      setEmailError('Please enter a valid email address.');
-      return;
-    }
-    if (!isHuman) {
-      toast.error('Please complete the human verification.');
-      return;
-    }
-    setSending(true);
-    try {
-      await base44.functions.invoke('notifyContactMessage', { data: form });
-      setSubmitted(true);
-      toast.success('Thank you — your message has reached the sisters.');
-      setForm({ name: '', email: '', subject: '', message: '' });
-      setCaptchaResetKey((k) => k + 1);
-      setTimeout(() => setSubmitted(false), 4000);
-    } catch (err) {
-      toast.error('Sorry — your message could not be sent. Please try again.');
-    } finally {
-      setSending(false);
-    }
-  };
-
   return (
     <>
       <PageHero
@@ -102,94 +56,26 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Form */}
-          <motion.form
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            onSubmit={handleSubmit}
-            className="lg:col-span-3 bg-secondary/60 p-6 md:p-10 space-y-5 shadow-sm border-t-4 border-primary"
+            className="lg:col-span-3 bg-secondary/60 p-6 md:p-10 shadow-sm border-t-4 border-primary flex flex-col items-start justify-center"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-xs uppercase tracking-wider font-heading font-bold text-accent">
-                  Your Name
-                </Label>
-                <Input
-                  id="name"
-                  required
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="h-12 bg-white border-border"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-xs uppercase tracking-wider font-heading font-bold text-accent">
-                  Email Address
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  required
-                  value={form.email}
-                  onChange={(e) => handleEmailChange(e.target.value)}
-                  onBlur={() => {
-                    if (form.email && !isValidEmail(form.email)) {
-                      setEmailError('Please enter a valid email address.');
-                    }
-                  }}
-                  aria-invalid={!!emailError}
-                  className={`h-12 bg-white ${emailError ? 'border-destructive' : 'border-border'}`}
-                />
-                {emailError && (
-                  <p className="text-xs text-destructive mt-1">{emailError}</p>
-                )}
-              </div>
+            <div className="w-14 h-14 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-6">
+              <Mail className="w-6 h-6" />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="subject" className="text-xs uppercase tracking-wider font-heading font-bold text-accent">
-                Subject
-              </Label>
-              <Input
-                id="subject"
-                required
-                value={form.subject}
-                onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                className="h-12 bg-white border-border"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="message" className="text-xs uppercase tracking-wider font-heading font-bold text-accent">
-                Your Message
-              </Label>
-              <Textarea
-                id="message"
-                required
-                rows={6}
-                value={form.message}
-                onChange={(e) => setForm({ ...form, message: e.target.value })}
-                className="bg-white border-border resize-none"
-              />
-            </div>
-
-            <HumanCheck onVerifiedChange={setIsHuman} resetSignal={captchaResetKey} />
-
-            <Button
-              type="submit"
-              size="lg"
-              disabled={submitted || sending || !isHuman}
-              className="w-full md:w-auto bg-primary hover:bg-primary/90 text-white font-heading font-black uppercase tracking-wide rounded h-14 px-10"
-            >
-              {submitted ? (
-                <><CheckCircle2 className="w-4 h-4 mr-2" /> Message Sent</>
-              ) : sending ? (
-                <>Sending...</>
-              ) : (
-                <>Send Message <Send className="w-4 h-4 ml-2" /></>
-              )}
-            </Button>
-          </motion.form>
+            <p className="text-xs uppercase tracking-wider font-heading font-bold text-accent mb-3">
+              Coming Soon
+            </p>
+            <h2 className="font-heading font-black text-3xl text-primary leading-tight uppercase">
+              Online Contact Form
+            </h2>
+            <p className="mt-4 max-w-lg text-foreground/75 leading-relaxed">
+              Our online contact form is being prepared. In the meantime, please email or call us using the details shown here.
+            </p>
+          </motion.div>
         </div>
       </section>
     </>
